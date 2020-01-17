@@ -8,6 +8,22 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+import { Form, HasError, AlertError } from 'vform'
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+window.Form=Form;
+let routes = [
+    { path: '/user-profile', component: require('./components/UserProfile.vue').default },
+    { path: '/user-list', component: require('./components/UserList.vue').default }
+
+]
+
+const router = new VueRouter({
+    mode: 'history',
+    routes // short for `routes: routes`
+  })
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,7 +36,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('asidebar-components', require('./components/Sidebar.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,5 +45,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
+    router,
     el: '#app'
 });
