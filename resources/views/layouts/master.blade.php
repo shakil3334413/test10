@@ -37,6 +37,7 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
+            <vue-progress-bar></vue-progress-bar>
             <router-view></router-view>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->

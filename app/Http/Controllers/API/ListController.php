@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth;
-use App\List;
+use App\Model\UserList;
+use Illuminate\Support\Facades\Validator;
+use App\User;
 class ListController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class ListController extends Controller
      */
     public function index()
     {
-        //
+        return UserList::all();
     }
 
     /**
@@ -26,7 +28,16 @@ class ListController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+        return UserList::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+        ]);
+        
+        
     }
 
     /**

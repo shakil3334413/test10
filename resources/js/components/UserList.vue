@@ -17,22 +17,22 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                      <form @submit.prevent="store" @keydown="form.onKeydown($event)">
+                      <form @submit.prevent="createuser" @keydown="form.onKeydown($event)">
                         <div class="form-group">
                           <label>Name</label>
                           <input v-model="form.name" type="text" name="name"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" placeholder="Enter Your User Name">
                           <has-error :form="form" field="name"></has-error>
                         </div>
 
                         <div class="form-group">
                           <label>Email</label>
                           <input v-model="form.email" type="email" name="email"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                            class="form-control" placeholder="Enter Your Email" :class="{ 'is-invalid': form.errors.has('email') }">
                           <has-error :form="form" field="email"></has-error>
                         </div>
 
-                        <button  type="submit" class="btn btn-primary">Submit</button>
+                      <input type="submit" class="btn btn-success">
                       </form>
                     </div>
                     <div class="modal-footer">
@@ -51,22 +51,20 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email(s)</th>
+                  <th>Created At</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{user.id}}</td>
+                  <td>{{user.name | capitalize }}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.created_at}}</td>
+                  <td><i class="fas fa-trash-alt red"></i>&nbsp;&nbsp;<i class="fas fa-edit green"></i></td>
                 </tr>
                 </tbody>
               </table>
@@ -80,6 +78,7 @@
 export default {
     data () {
     return {
+      users:[],
       // Create a new form instance
       form: new Form({
         name: '',
@@ -89,11 +88,35 @@ export default {
   },
 
   methods: {
-    store () {
+    showuser(){
+      axios.get('api/list').then(({data})=>(this.users=data));
+    },
+    createuser () {
       // Submit the form via a POST request
-      this.form.post('api/list')
+        this.$Progress.start();
+        this.form.post('api/list')
         .then(({ data }) => { console.log(data) })
+        .then(()=>{
+            // Fire.$emit('AfterCreat')
+            $('#exampleModalLong').modal('hide');
+            Toast.fire({
+            icon: 'success',
+            title: 'Create User'
+            })
+            this.$Progress.finish();
+        })
+        .catch(()=>{
+
+        })
+
     }
+  },
+  created(){
+    this.showuser();
+    // Fire.$on('AfterCreat',()=>{
+    // this.showuser();
+    // });
+    setInterval(()=>this.showuser(),3000);
   }
 }
 </script>

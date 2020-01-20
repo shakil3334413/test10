@@ -8,22 +8,72 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+// Vue route
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
+
+// sweet aleart
+import Swal from 'sweetalert2'
+window.Swal=Swal;
+
+// v-form
 import { Form, HasError, AlertError } from 'vform'
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 window.Form=Form;
+
+// Moment.js
+import moment from 'moment';
+// Progress bar
+import VueProgressBar from 'vue-progressbar'
+// vue page route
+
 let routes = [
     { path: '/user-profile', component: require('./components/UserProfile.vue').default },
     { path: '/user-list', component: require('./components/UserList.vue').default }
-
 ]
 
 const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
   })
+
+//   Filter
+Vue.filter('capitalize', function (value) {
+    // if (!value) return ''
+    // value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  });
+
+// vue date moment
+
+Vue.filter('mydate', function (create) {
+    return create.moment().format('MMMM Do YYYY, h:mm:ss a');
+  });
+
+//   vue progress bar
+
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '2px'
+  });
+
+//   sweet alear
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+  });
+
+  window.Toast=Toast;
+
+// custom event
+
+// window.Fire= new vue();
+
 
 /**
  * The following block of code may be used to automatically register your
