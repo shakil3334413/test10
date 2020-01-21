@@ -2,8 +2,8 @@
         <div class="col-md-12 mt-3">
             <div class="add-user mb-5">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalLong">
-                Launch demo modal
+                <button type="button" class="btn btn-primary float-right" @click="showform()">
+                Add New User
                 </button>
 
                 <!-- Modal -->
@@ -66,10 +66,10 @@
                   <td>{{user.created_at}}</td>
                   <td>
 
-                      <a href="#" @click="deleteuser(user.id)">
+                      <a href="#" @click="deleteuser(user)">
                         <i class="fas fa-trash-alt red"></i>
                       </a>
-                    <a href="#"><i class="fas fa-edit green"></i></a>
+                    <a href="#" @click="edituser(user)"><i class="fas fa-edit green"></i></a>
                       &nbsp;&nbsp;</td>
                 </tr>
                 </tbody>
@@ -94,6 +94,15 @@ export default {
   },
 
   methods: {
+      showform(){
+
+           $('#exampleModalLong').modal('show');
+      },
+      edituser(user){
+           this.form.reset();
+           $('#exampleModalLong').modal('show');
+            this.form.fill (user)
+      },
     deleteuser(id){
       Swal.fire({
           title: 'Are you sure?',

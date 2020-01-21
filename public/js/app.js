@@ -1808,6 +1808,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    showform: function showform() {
+      $('#exampleModalLong').modal('show');
+    },
+    edituser: function edituser(user) {
+      this.form.reset();
+      $('#exampleModalLong').modal('show');
+      this.form.fill(user);
+    },
     deleteuser: function deleteuser(id) {
       var _this = this;
 
@@ -58944,13 +58952,14 @@ var render = function() {
         "button",
         {
           staticClass: "btn btn-primary float-right",
-          attrs: {
-            type: "button",
-            "data-toggle": "modal",
-            "data-target": "#exampleModalLong"
+          attrs: { type: "button" },
+          on: {
+            click: function($event) {
+              return _vm.showform()
+            }
           }
         },
-        [_vm._v("\n        Launch demo modal\n        ")]
+        [_vm._v("\n        Add New User\n        ")]
       ),
       _vm._v(" "),
       _c(
@@ -59120,14 +59129,25 @@ var render = function() {
                         attrs: { href: "#" },
                         on: {
                           click: function($event) {
-                            return _vm.deleteuser(user.id)
+                            return _vm.deleteuser(user)
                           }
                         }
                       },
                       [_c("i", { staticClass: "fas fa-trash-alt red" })]
                     ),
                     _vm._v(" "),
-                    _vm._m(4, true),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.edituser(user)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fas fa-edit green" })]
+                    ),
                     _vm._v("\n                ")
                   ])
                 ])
@@ -59207,14 +59227,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "#" } }, [
-      _c("i", { staticClass: "fas fa-edit green" })
     ])
   }
 ]
