@@ -64,7 +64,13 @@
                   <td>{{user.name | capitalize }}</td>
                   <td>{{user.email}}</td>
                   <td>{{user.created_at}}</td>
-                  <td><i class="fas fa-trash-alt red"></i>&nbsp;&nbsp;<i class="fas fa-edit green"></i></td>
+                  <td>
+
+                      <a href="#" @click="deleteuser(user.id)">
+                        <i class="fas fa-trash-alt red"></i>
+                      </a>
+                    <a href="#"><i class="fas fa-edit green"></i></a>
+                      &nbsp;&nbsp;</td>
                 </tr>
                 </tbody>
               </table>
@@ -88,6 +94,30 @@ export default {
   },
 
   methods: {
+    deleteuser(id){
+      Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+        this.form.delete('api/list/'+id).then(()=>{
+            if (result.value) {
+            Swal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+            setInterval(()=>this.showuser(),1000);
+            }
+        }).catch(()=>{
+            Swal("Failed","Some thing went to wrong","warning");
+        })
+        })
+    },
     showuser(){
       axios.get('api/list').then(({data})=>(this.users=data));
     },

@@ -36,8 +36,8 @@ class ListController extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
         ]);
-        
-        
+
+
     }
 
     /**
@@ -71,6 +71,10 @@ class ListController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user=UserList::findOrfail($id);
+
+        $user->delete();
+
+        return ['message'=>'successfully deleted'];
     }
 }

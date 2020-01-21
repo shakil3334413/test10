@@ -1790,6 +1790,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1802,16 +1808,40 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    showuser: function showuser() {
+    deleteuser: function deleteuser(id) {
       var _this = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        _this.form["delete"]('api/list/' + id).then(function () {
+          if (result.value) {
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            setInterval(function () {
+              return _this.showuser();
+            }, 1000);
+          }
+        })["catch"](function () {
+          Swal("Failed", "Some thing went to wrong", "warning");
+        });
+      });
+    },
+    showuser: function showuser() {
+      var _this2 = this;
 
       axios.get('api/list').then(function (_ref) {
         var data = _ref.data;
-        return _this.users = data;
+        return _this2.users = data;
       });
     },
     createuser: function createuser() {
-      var _this2 = this;
+      var _this3 = this;
 
       // Submit the form via a POST request
       this.$Progress.start();
@@ -1826,19 +1856,19 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Create User'
         });
 
-        _this2.$Progress.finish();
+        _this3.$Progress.finish();
       })["catch"](function () {});
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.showuser(); // Fire.$on('AfterCreat',()=>{
     // this.showuser();
     // });
 
     setInterval(function () {
-      return _this3.showuser();
+      return _this4.showuser();
     }, 3000);
   }
 });
@@ -59083,7 +59113,23 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(user.created_at))]),
                   _vm._v(" "),
-                  _vm._m(4, true)
+                  _c("td", [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteuser(user.id)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fas fa-trash-alt red" })]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(4, true),
+                    _vm._v("\n                ")
+                  ])
                 ])
               }),
               0
@@ -59167,9 +59213,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("i", { staticClass: "fas fa-trash-alt red" }),
-      _vm._v("  "),
+    return _c("a", { attrs: { href: "#" } }, [
       _c("i", { staticClass: "fas fa-edit green" })
     ])
   }
